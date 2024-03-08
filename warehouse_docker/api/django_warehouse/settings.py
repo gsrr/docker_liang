@@ -26,9 +26,8 @@ SECRET_KEY = "django-insecure-z^h(mbp^5(q1e(zx48=f68wbe85eoas$3uw6(f-u5osq9ws2j(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    '172.17.32.33'
-]
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -87,7 +86,7 @@ DATABASES = {
         'NAME': 'admin',  # 設定為你的 PostgreSQL 數據庫名稱
         'USER': 'admin',
         'PASSWORD': 'admin',
-        'HOST': '172.24.0.1',  # 如果你的數據庫運行在本地
+        'HOST': '172.29.0.1',  # 如果你的數據庫運行在本地
         'PORT': '5055',
     }
 } #這是本地端的設定
@@ -159,7 +158,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'staticfiles/'),
+)
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -171,9 +176,6 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -187,5 +189,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'kyotozuiryu@gmail.com'
+EMAIL_HOST_PASSWORD = 'uvuhkqnqxqfdposi'
