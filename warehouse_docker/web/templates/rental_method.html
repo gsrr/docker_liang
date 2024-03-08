@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>資賃方式以及費用說明</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+        }
+
+        .explain {
+            text-align: left;
+        }
+
+        h1, h2, p {
+            margin: 15px 0;
+        }
+
+        .location-container {
+            border-bottom: 1px solid;
+            border-image: linear-gradient(to right, #aaa, #333, #aaa) 1;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>租賃方式及費用說明</h1>
+        <div class="explain">
+
+        <p>{{ content1.租賃方式說明 }}</p>
+        <p>{{ content2.租賃方式說明 }}</p>
+        <p>{{ content3.租賃方式說明 }}</p>
+        <p>{{ content4.租賃方式說明 }}</p>
+        <p>{{ content5.租賃方式說明 }}</p>
+        </div>
+        <h1>租賃方式及說明</h1>
+        <div class="explain">
+        <p>{{ content1.租賃方式說明 }}</p>
+        </div>
+
+
+
+
+        <h1>瑞龍智能倉儲功能說明</h1>
+        <div class="explain">
+        <p>{{ content1.瑞龍倉功能說明 }}</p>
+        <p>{{ content2.瑞龍倉功能說明 }}</p>
+        <p>{{ content3.瑞龍倉功能說明 }}</p>
+        <p>{{ content4.瑞龍倉功能說明 }}</p>
+        <p>{{ content5.瑞龍倉功能說明 }}</p>
+        </div>
+
+    <div>
+        <div class="location-container">
+        <h1>費率說明</h1>
+        {% for location in locations %}
+        <div>
+            <h2>{{ location.location_name }}</h2>
+            <p>地址：{{ location.address }}</p>
+            <p>最大空间数：{{ location.max_space_number }}</p>
+            <p>已占用空间数：{{ location.occupied_space_number }}</p>
+            <p>可用空间数：{{ location.available_space_number }}</p>
+
+            {% if location.location_id == 'nu1' %}
+            <p>費用：{{ content1.內湖費率說明 }}</p>
+            <p>尺寸：{{ content2.內湖費率說明 }}</p>
+            <p>{{ content3.內湖費率說明 }}</p>
+            {% elif location.location_id == 'qd1' %}
+                <p>費用：{{ content1.青田費率說明 }}</p>
+                <p>尺寸：{{ content2.青田費率說明 }}</p>
+                <p>{{ content3.青田費率說明 }}</p>
+            {% endif %}
+        </div>
+            </div>
+    {% endfor %}
+
+    </div>
+    </div>
+
+</body>
+</html>

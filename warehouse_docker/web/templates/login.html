@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <title>Login</title>
+    <style>
+     body {
+    font-family: 'Yu Gothic', sans-serif; /* 日式風格的字體 */
+    background-color: #f9f4e8; /* 淺黃色背景 */
+    color: #3d3d3d; /* 深色文字 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #dcd4c0; /* 英倫典雅的邊框 */
+    background-color: #fff;
+}
+
+/* ... 其他 CSS ... */
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h2>Login</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ login_form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+    <a href="{% url 'password_reset' %}">忘記密碼？</a>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+
+</html>

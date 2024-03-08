@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理倉儲空間 - {{ rentalspace.space_id }}</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 20px;
+            padding: 15px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .unit, .item, form {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label, input, select, textarea, button {
+            display: block;
+            width: auto;
+            margin: 10px auto;
+        }
+        button {
+            background-color: rgb(255, 153, 0);
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ffae00;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+        .unit-info {
+            background-color: #f0f0f0; /* 浅灰色背景 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 轻微的立体阴影 */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box; /* 让内边距和边框不会撑开容器 */
+        }
+
+        .unit-info h2, .unit-info p {
+            margin: 10px 0;
+        }
+
+        .unit-info form {
+            margin-top: 15px;
+        }
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* 每行10个单元格 */
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.item {
+    position: relative;
+    text-align: center;
+}
+
+.item img {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+}
+.item-notes {
+    font-size: 12px; /* 调整字体大小 */
+    color: #333; /* 文本颜色 */
+    margin-top: 5px; /* 上边距 */
+}
+
+.delete-form {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 16px;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    padding: 0;
+    display: inline-block;
+}
+
+#item_photos {
+    margin-left: 530px; /* 調整上傳item照片input框對齊上下文,因為他沒辦法置中 */
+
+}
+
+.items-grid {
+    border: 1px solid #ccc; /* 添加淺灰色的邊框 */
+    border-radius: 5px; /* 添加圓角 */
+    padding: 10px; /* 添加內邊距 */
+    background: linear-gradient(to bottom, #ffffff 0%, #f9f9f9 100%); /* 添加漸層背景 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加淺色陰影 */
+    margin: 10px 0; /* 添加外邊距 */
+}
+
+.items-grid:hover {
+    border-color: #bbb; /* 當鼠標懸停時改變邊框顏色 */
+}
+
+/* 進一步調整圖片樣式 */
+.item img {
+    margin-bottom: 5px; /* 圖片下方添加間距 */
+    border-radius: 3px; /* 圖片添加圓角 */
+}
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>管理倉儲空間 - {{ rentalspace.location }} {{ rentalspace.space_id }}</h1>
+        <p>倉儲空間地址: {{ rentalspace.location.address }}</p>
+        <p>使用者姓名: {{ rentalspace.order.user.customerprofile.real_name }}</p>
+
+        <!-- 添加新的 Unit -->
+        <form method="post">
+            {% csrf_token %}
+            <label for="unit_type">選擇要新增的紙箱或物品:</label>
+            {{ unit_form.unit_type }}
+            <label for="unit_notes">備註:</label>
+            {{ unit_form.unit_notes }}
+            <button type="submit" name="add_unit">新增倉儲單位</button>
+        </form>
+
+        <!-- 遍历展示所有 Unit -->
+        {% for unit in units %}
+            <div class="unit">
+               <div class="unit-info">
+                    <p>儲藏單位類型: {{ unit.unit_type.unit_type_name }}</p>
+                    <p>儲藏單位大小: {{ unit.unit_type.unit_type_size }}</p>
+                    <h2>編號: {{ unit.unit_id }}</h2>
+                    <p>儲藏單位類型: {{ unit.unit_type.unit_type_name }}</p>
+                   <div class="unit-notes" id="unit-notes-display-{{ unit.id }}">
+                        <span id="notes-text-unit-{{ unit.id }}">{{ unit.unit_notes }}</span>
+                        <a href="javascript:void(0);" onclick="toggleEditUnit(true, {{ unit.id }});" class="edit-icon">✏️</a>
+                    </div>
+
+                    <div class="unit-notes-edit" id="unit-notes-edit-unit-{{ unit.id }}" style="display: none;">
+                        <input type="text" value="{{ unit.unit_notes }}" id="notes-input-unit-{{ unit.id }}">
+                        <button id="save-notes-unit-{{ unit.id }}" data-url="{% url 'update_unit_notes' unit.id %}" onclick="saveNotesUnit({{ unit.id }});" class="save-notes-btn" hidden>保存</button>
+
+                        <button onclick="toggleEditUnit(false, {{ unit.id }});">取消</button>
+                    </div>
+
+                    <!-- 删除 Unit 按钮 -->
+                    <form method="post" action="{% url 'delete_unit' unit.id %}" onsubmit="return confirmDelete();">
+                        {% csrf_token %}
+                        <button type="submit" class="small-button">删除倉儲單位</button>
+                    </form>
+                </div>
+
+               <div class = "forms-container">
+                <!-- 添加新的 Item -->
+
+
+                <form method="post" enctype="multipart/form-data" class="form-inline">
+                    {% csrf_token %}
+                    <label for="item_photos">新增要儲藏的物品:</label>
+                    <input type="file" name="item_photos" id="item_photos" multiple>
+                    <input type="hidden" name="unit_id" value="{{ unit.id }}">
+                    <button type="submit" name="add_multiple_items">上傳图片</button>
+
+                    <a href="{% url 'item_number_scan' location_id=rentalspace.location.location_id rentalspace_id=rentalspace.id unit_id=unit.id %}" class="scan-button">進入掃描頁面</a>
+                </form>
+
+
+                </div>
+
+                <!-- 遍历展示所有 Item -->
+                <div class="items-grid">
+                    {% for item in unit.items.all %}
+                        <div class="item">
+                            <a href="{{ item.photo.url }}" target="_blank">
+                                <img src="{{ item.photo.url }}" alt="儲藏品">
+                            </a>
+                             <!-- Item display with edit button -->
+                            <div class="item-notes" id="item-notes-display-{{ item.id }}">
+                                <span id="notes-text-{{ item.id }}">
+                                    {{ item.item_notes|default:item.item_id }}
+                                </span>
+                                <a href="javascript:void(0);" onclick="toggleEdit(true, {{ item.id }});" class="edit-icon">✏️</a>
+                            </div>
+                            <!-- Hidden edit form -->
+                            <div class="item-notes-edit" id="item-notes-edit-{{ item.id }}" style="display: none;">
+                                <input type="text" value="{{ item.item_notes|default:'' }}" id="notes-input-{{ item.id }}">
+                                <button id="save-notes-{{ item.id }}" data-url="{% url 'update_item_notes' item.id %}" onclick="saveNotes({{ item.id }})">保存</button>
+                                <button onclick="toggleEdit(false, {{ item.id }});">取消</button>
+                            </div>
+
+
+
+                            <!-- 删除 Item 按钮 -->
+                            <form method="post" action="{% url 'delete_item' item.id %}" class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button">X</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+<script type="text/javascript">
+    function confirmDelete() {
+        return confirm('是否確認要刪除此儲藏箱?');
+    }
+</script>
+
+<!-- 修改unit備註 -->
+<script type="text/javascript">
+function toggleEditUnit(editMode, unitId) {
+    var displayDiv = document.getElementById('unit-notes-display-' + unitId);
+    var editDiv = document.getElementById('unit-notes-edit-unit-' + unitId);
+
+    if(editMode) {
+        displayDiv.style.display = 'none';
+        editDiv.style.display = 'block';
+    } else {
+        displayDiv.style.display = 'block';
+        editDiv.style.display = 'none';
+    }
+}
+
+function saveNotesUnit(unitId) {
+    var saveButton = document.getElementById('save-notes-unit-' + unitId);
+    var url = saveButton.getAttribute('data-url');
+    var notesInput = document.getElementById('notes-input-unit-' + unitId).value;
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({'unit_id': unitId, 'new_notes': notesInput})
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById('notes-text-unit-' + unitId).textContent = notesInput;
+            toggleEditUnit(false, unitId);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+</script>
+
+
+
+
+
+
+<!-- 修改item備註 -->
+<script type="text/javascript">
+function toggleEdit(editMode, itemId) {
+    var displayDiv = document.getElementById('item-notes-display-' + itemId);
+    var editDiv = document.getElementById('item-notes-edit-' + itemId);
+
+    if(editMode) {
+        displayDiv.style.display = 'none';
+        editDiv.style.display = 'block';
+    } else {
+        displayDiv.style.display = 'block';
+        editDiv.style.display = 'none';
+    }
+}
+
+function saveNotes(itemId) {
+    var notesInput = document.getElementById('notes-input-' + itemId).value;
+    var saveButton = document.getElementById('save-notes-' + itemId);//沒有這個函數無法儲存修改
+    var url = saveButton.getAttribute('data-url');
+
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({'item_id': itemId, 'new_notes': notesInput})
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the notes display text
+            document.getElementById('notes-text-' + itemId).textContent = notesInput;
+            toggleEdit(false, itemId);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+</script>
+
+</html>

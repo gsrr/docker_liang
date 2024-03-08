@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>現場支付</title>
+</head>
+<body>
+    {% block content %}
+        <h2>請於櫃檯支付完畢後出示此QR CODE 給工作人員</h2>
+        <img src="{{ qrcode_data }}" alt="QR Code">
+    {% endblock %}
+</body>
+</html>

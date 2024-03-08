@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner</title>
+    <style>
+        #scanned-codes {
+            margin-top: 20px;
+        }
+
+        #scan-animation .scanner {
+        width: 100%;
+        height: 50px;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
+        animation: scan 2s infinite linear;
+    }
+
+    @keyframes scan {
+        0% { transform: translateY(-50px); }
+        100% { transform: translateY(100%); }
+    }
+
+
+    #scan-animation {
+        position: relative;
+        width: 100px; /* 调整宽度 */
+        height: 20px; /* 调整高度 */
+        background-color: #f3f3f3; /* 背景色 */
+        overflow: hidden;
+    }
+
+    .scanner-line {
+        position: absolute;
+        width: 100%;
+        height: 2px; /* 扫描线高度，可以更细 */
+        background-color: rgba(255, 0, 0, 0.79); /* 扫描线颜色 */
+        animation: scanning 1.5s linear infinite;
+    }
+
+    @keyframes scanning {
+        0% { top: 0; }
+        100% { top: 100%; }
+    }
+    /* 以下为頁面样式调整，與其他版面一致 */
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 20px;
+    padding: 15px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    background-color: rgb(255, 153, 0);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 10px auto;
+    display: block;
+}
+
+button:hover {
+    background-color: #ffae00;
+}
+</style>
+
+
+
+
+
+</head>
+<body>
+   <div class="container">
+        <h3>使用說明</h3>
+        <p>1.本掃描功能僅限京都瑞龍株式會社購買的貨號商品,其餘內容請手動修改</p>
+        <p>2.請先上傳本箱要儲存的物品照片,然後依照順序掃描,照片數與掃描貨號組數需要相同</p>
+        <p>3.掃描前請將輸入法切換到英數鍵盤</p>
+        <p>4.請按下開始掃描,才會開始接收掃描信號,如果掃描結果是整串網址,請刪除後再按下開始掃描重新掃描</p>
+
+        <div id="scan-status">尚未啟動掃描</div>
+        <div id="scan-animation" style="display: none;">
+            <div class="scanner-line"></div>
+        </div>
+
+        <button id="start-scan">開始掃描</button>
+        <button id="stop-scan">结束並存檔</button>
+        <textarea id="scanned-results" rows="4" cols="50" placeholder="掃描結果將顯示在此處,若未正確顯示貨號請刪除文字重新掃描"></textarea>
+
+        <div id="scanned-barcodes">
+            {% for barcode in scanned_barcodes %}
+                <p>{{ barcode }}</p> <!-- 显示匹配到的货号 -->
+            {% endfor %}
+        </div>
+    </div>
+
+
+ <script src="{% static 'js/scan.js' %}"></script>
+
+</body>
+<script>
+    var locationId = {{ location_id }};
+    var rentalspaceId = {{ rentalspace_id }};
+    var unitId = {{ unit_id }};
+
+    var startScanBtn = document.getElementById('start-scan');
+    var stopScanBtn = document.getElementById('stop-scan');
+    var scanStatus = document.getElementById('scan-status');
+    var scanAnimation = document.getElementById('scan-animation');
+
+    startScanBtn.addEventListener('click', function() {
+        scanStatus.textContent = '正在接收掃描信號...';
+        scanAnimation.style.display = 'block';
+        // 其他开始扫描的逻辑...
+    });
+
+    stopScanBtn.addEventListener('click', function() {
+        scanStatus.textContent = '尚未啟動掃描';
+        scanAnimation.style.display = 'none';
+        // 其他结束扫描的逻辑...
+    });
+
+</script>
+
+</html>

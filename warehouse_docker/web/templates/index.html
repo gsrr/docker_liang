@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瑞龍倉 AI智能倉儲</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container, header {
+            max-width: 70%;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        header {
+            background: #333;
+            color: #fff;
+            padding: 15px 0;
+            border-bottom: #ff6f61 solid 4px;
+        }
+
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+
+        header ul {
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        header li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        header .highlight, header .current a {
+            color: #ff6f61;
+            font-weight: bold;
+        }
+
+        header a:hover {
+            color: #ff6f61;
+        }
+
+        .showcase {
+            min-height: 400px;
+            background: url('{% static "X090001-1.jpg" %}') no-repeat center center;
+            background-size: cover;
+            text-align: center;
+            color: #fff;
+        }
+
+        .showcase h1 {
+            margin-top: 100px;
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+        .showcase p {
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            header, .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            header ul {
+                text-align: left;
+            }
+
+            header li {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+
+        /* 輪播框基本樣式 */
+        .carousel {
+            width: 100%;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .carousel-item {
+            width: 100%;
+            display: none;
+        }
+
+        .carousel-item.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>瑞龍倉 AI智能倉儲</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'rental_method_view' %}">租賃方式費用說明</a></li>
+                    <li><a href="#">租賃地點</a></li>
+                    <li><a href="{% url 'buy_membership' %}">開始租賃</a></li>
+                    <li><a href="{% url 'my_rental_space' %}">我的倉儲</a></li>
+                    <li><a href="{% url 'login' %}" >會員登入</a></li>
+                    <li><a href="{% url 'logout' %}" >會員登出</a></li>
+                    <li><a href="{% url 'phone_verification' %}" >會員註冊</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="showcase">
+            <h1>歡迎來到瑞龍倉</h1

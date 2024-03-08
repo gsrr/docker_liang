@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<style>
+    body {
+    font-family: 'Yu Gothic', sans-serif; /* 日式風格的字體 */
+    background-color: #f9f4e8; /* 淺黃色背景 */
+    color: #3d3d3d; /* 深色文字 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 800px;
+    padding: 20px;
+    border: 1px solid #dcd4c0; /* 英倫典雅的邊框 */
+    background-color: #fff;
+}
+
+/* ... 其他 CSS ... */
+
+
+</style>
+
+<div class="container">
+    <h2>電話驗證</h2>
+    {% if not otc_sent %}
+        <!-- 只有在OTP沒有發送時顯示這個表單 -->
+        <form method="post", action = "{% url 'change_phone' %}">
+            {% csrf_token %}
+            <label for="phone">{{ form.phone.label_tag }}:</label>
+            {{ form.phone }}
+            <label for="captcha">{{ form.captcha.label_tag }}:</label>
+            {{ form.captcha }}
+            <button type="submit" name="sent_otc">發送OTP簡訊</button>
+        </form>
+    {% endif %}
+
+    {% if otc_sent %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="otc">{{ form.otc.label_tag }}:</label>
+        {{ form.otc }}
+        <button type="submit" name="verify_otc">驗證OTC</button>
+    </form>
+
+
+    <label for="phone">{{ profile_form.phone.label_tag }}:</label>
+    <input type="text" name="phone" value="{{ request.session.verified_phone }}" readonly>
+    {% endif %}
+</div>
+
+</html>

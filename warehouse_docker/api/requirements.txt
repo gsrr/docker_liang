@@ -1,0 +1,13 @@
+Django==4.2.10
+djangorestframework==3.12.4
+psycopg2-binary==2.9.9
+celery==5.3.6
+django-simple-captcha==0.6.0
+django-storages==1.14.2
+requests==2.31.0
+opencv-python-headless
+qrcode==7.4.2
+boto3==1.33.4
+
+uwsgi
+django-cors-headers

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理租賃空間</title>
+</head>
+<body>
+
+<h1>管理租賃空間</h1>
+
+{% for location in locations %}
+    <h2>{{ location.location_name }}</h2>
+    <ul>
+    {% for space in location.warelocation.all %}
+        <li>
+            <a href="{% url 'manage_rentalspace' space.space_id %}">
+                {{ space.space_id }} - {{ space.order.user.customerprofile.real_name }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% empty %}
+    <p>没有找到任何位置。</p>
+{% endfor %}
+
+</body>
+</html>

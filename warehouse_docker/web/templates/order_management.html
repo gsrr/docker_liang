@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單管理</title>
+</head>
+<body>
+
+<h1>訂單管理</h1>
+    <h2>
+        <a href="{% url 'all_orders_view' %}">所有訂單</a> |
+        <a href="{% url 'new_orders_view' %}">新成立訂單</a> |
+        <a href="{% url 'upcoming_expiry_orders_view' %}">即將到期訂單</a> |
+        <a href="{% url 'expired_orders_view' %}">已到期訂單</a> |
+        <a href="{% url 'staff_manage_rentalspace' %}">管理客戶空間</a>
+    </h2>
+
+    <div id="orders_display_area">
+        <!-- 由視圖函數渲染的訂單內容將在這裡顯示 -->
+    <div id="orders_display_area">
+    <h3>{{ title }}</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>訂單編號</th>
+                <th>用戶帳戶</th>
+                <th>用戶姓名</th>
+                <th>用戶電話</th>
+                <th>建立日期</th>
+                <th>到期日期</th>
+                <th>倉儲地點</th>
+                <th>倉儲號碼</th>
+                <th>狀態</th>
+
+            </tr>
+        </thead>
+        <tbody>
+    {% for order in membershiporders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.user.customerprofile.real_name }}</td>
+        <td>{{ order.user.customerprofile.phone }}</td>
+        <td>{{ order.start_date|date:"Y-m-d" }}</td>
+        <td>{{ order.end_date|date:"Y-m-d" }}</td>
+        <td>{{ order.location.location_name }}</td>
+        <td>{{ order.spaces}}</td>
+        <td>{{ order.get_payment_status_display }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="9">沒有訂單</td>
+    </tr>
+    {% endfor %}
+</tbody>
+    </table>
+</div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

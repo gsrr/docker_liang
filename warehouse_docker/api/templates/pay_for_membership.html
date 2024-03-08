@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            height: 2px;
+            width: 50%;
+            background: linear-gradient(to right, transparent, #ffae00, transparent);
+        }
+        p {
+            color: #666;
+            margin: 10px 0;
+        }
+        button {
+            background-color: rgb(255, 153, 0);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #ffae00;
+        }
+        @media screen and (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>確認訂單內容 {{ order.id }}</h2>
+        <p>支付金額: {{ order.amount }}</p>
+        <p>User Balance: {{ user_balance.balance }}</p>
+        <p>租賃開始日期: {{ order.start_date|date:"Y-m-d H:i" }}</p>
+        <p>租賃結束日期: {{ order.end_date|date:"Y-m-d H:i" }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" name="payment_method" value="linepay">Line Pay</button>
+            <button type="submit" name="payment_method" value="credit_card">Credit Card</button>
+        </form>
+        <form method="post" action="{% url 'pay_on_site' %}">
+            {% csrf_token %}
+            <button type="submit" name="payment_method" value="cash">Cash</button>
+        </form>
+        <form method="post" action="{% url 'confirm_payment_test' %}">
+            {% csrf_token %}
+            <button type="submit" name="payment_method" value="cash">完成</button>
+        </form>
+    </div>
+</body>
+</html>

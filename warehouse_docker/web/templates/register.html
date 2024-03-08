@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+
+    <style>
+        body {
+            font-family: 'Yu Gothic', sans-serif; /* 日式風格的字體 */
+            background-color: #f9f4e8; /* 淺黃色背景 */
+            color: #3d3d3d; /* 深色文字 */
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #dcd4c0; /* 英倫典雅的邊框 */
+            background-color: #fff;
+        }
+        h2 {
+            border-bottom: 2px solid #dcd4c0; /* 英倫典雅的邊框 */
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        label, input, button {
+            display: block;
+            margin-bottom: 15px;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dcd4c0;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #dcd4c0;
+            color: #3d3d3d;
+            cursor: pointer;
+            transition: 0.3s all;
+        }
+        button:hover {
+            background-color: #f9f4e8;
+        }
+        input[type="text"], input[type="password"], input[type="file"] {
+    max-width: 300px;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>註冊</h2>
+        {{ user_form.errors }}
+        {{ profile_form.errors }}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="username">用戶名稱:</label>
+            {{ user_form.username }}
+
+            <label for="password1">密碼:</label>
+            {{ user_form.password1 }}
+
+            <label for="password2">確認密碼:</label>
+            {{ user_form.password2 }}
+
+            <label for="password2">email:</label>
+            {{ user_form.email }}
+
+            <label for="phone">電話:</label>
+            <input type="text" name="phone" value="{{ request.session.verified_phone }}" readonly>
+
+            <label for="real_name">真實姓名:</label>
+            {{ profile_form.real_name }}
+
+            <label for="address">地址:</label>
+            {{ profile_form.address }}
+
+            <label for="id_number">身分證明文件號碼:</label>
+            {{ profile_form.id_number }}
+
+            <label for="id_photo">身分證明文件照片:</label>
+            {{ profile_form.id_photo }}
+
+            <button type="submit">註冊</button>
+        </form>
+    </div>
+</body>
+</html>

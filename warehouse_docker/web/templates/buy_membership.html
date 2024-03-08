@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>訂閱會員</title>
+    <style>
+       body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+form {
+    background-color: white;
+    padding: 40px; /* 增加内边距 */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 600px; /* 增加表单宽度 */
+}
+
+label {
+    margin-top: 20px; /* 增加标签的上边距 */
+    font-size: 18px; /* 增加字体大小 */
+}
+
+select, input[type="submit"] {
+    padding: 20px; /* 增加填充 */
+    margin-top: 10px; /* 增加上边距 */
+    border: 2px solid #ccc; /* 增加边框宽度 */
+    border-radius: 8px; /* 增加边框圆角 */
+    font-size: 16px; /* 增加字体大小 */
+}
+
+input[type="submit"] {
+
+    /* 英國風格黃色背景 */
+    background-color:  #ffae00;
+
+
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    /* 增加與上方間距*/
+    margin-top: 30px;
+    /* 框限陰影*/
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="submit"]:hover {
+    background-color: rgba(255, 174, 0, 0.84);
+}
+
+    </style>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        <label for="membership_type">請選擇租賃計畫:</label>
+        <select name="membership_type" id="membership_type">
+            {% for type in membership_types %}
+            <option value="{{ type.id }}">{{ type.membership_type_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="location">請選擇倉儲地點:</label>
+        <select name="location" id="location">
+            {% for loc in locations %}
+            <option value="{{ loc.id }}">{{ loc.location_name }}</option>
+            {% endfor %}
+        </select>
+        <label for="space_type">請選擇倉儲類型:</label>
+        <select name="space_type" id="space_type">
+            {% for space in space_types %}
+            <option value="{{ space.space_type_name }}">{{ space.space_type_name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="確認購買 前往付款">
+    </form>
+</body>
+</html>

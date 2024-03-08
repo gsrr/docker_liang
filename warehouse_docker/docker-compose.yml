@@ -1,0 +1,49 @@
+version: "3"
+
+volumes:
+  web_data:
+  db_data:
+
+networks:
+  db_network:
+    driver: bridge
+
+services:
+  db:
+    container_name: db-container
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+    ports:
+      - "5055:5432"
+    environment:
+      POSTGRES_DB: admin
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    networks:
+      - db_network
+    restart: always
+
+  web:
+    container_name: web-container
+    build: ./api
+    volumes:
+      - web_data:/docker_api
+    restart: always
+    entrypoint: /docker_api/docker-entrypoint.sh
+    command: uwsgi --ini uwsgi.ini
+    networks:
+      - db_network
+    depends_on:
+      - db
+
+  nginx:
+    container_name: nginx-container
+    build: ./compose/nginx
+    ports:
+      - "5050:80"
+    volumes:
+      - web_data:/docker_api
+    depends_on:
+      - web
+    restart: always
